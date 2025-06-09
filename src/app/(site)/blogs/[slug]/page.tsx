@@ -5,9 +5,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { Icon } from '@iconify/react'
 
-type Props = {
-    params: { slug: string };
-};
 
 export async function generateMetadata({ params }: any) {
     const data = await params;

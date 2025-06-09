@@ -59,7 +59,7 @@ export default function ContactUs() {
         </div>
         <div className='text-center'>
           <h3 className='text-4xl sm:text-52 font-medium tracking-tighter text-black dark:text-white mb-3 leading-10 sm:leading-14'>
-            Have questions? We're here to assist!
+            Have questions? We are here to assist!
           </h3>
           <p className='text-xm font-normal tracking-tight text-black/50 dark:text-white/50 leading-6'>
             Discover expert consultancy services tailored to your needs. Bhartiya Consultants is your trusted partner for personalized solutions.
