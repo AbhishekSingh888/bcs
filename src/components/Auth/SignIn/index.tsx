@@ -3,11 +3,11 @@ import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useContext, useState } from "react";
 import SocialSignIn from "../SocialSignIn";
-import toast, { Toaster } from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
 import AuthDialogContext from "@/app/context/AuthDialogContext";
 import Logo from "@/components/Layout/Header/BrandLogo/Logo";
 
-const Signin = ({ signInOpen }: { signInOpen?: any }) => {
+const Signin = ({ onClose }: { onClose?: () => void }) => {
   const [username, setUsername] = useState("admin");
   const [password, setPassword] = useState("admin123");
   const authDialog = useContext(AuthDialogContext);
@@ -23,7 +23,9 @@ const Signin = ({ signInOpen }: { signInOpen?: any }) => {
 
     if (result?.status === 200) {
       setTimeout(() => {
-        signInOpen(false);
+        if (onClose) {
+          onClose();
+        }
       }, 1200);
       authDialog?.setIsSuccessDialogOpen(true);
       setTimeout(() => {

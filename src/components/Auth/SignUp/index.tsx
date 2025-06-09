@@ -6,15 +6,13 @@ import SocialSignUp from "../SocialSignUp";
 import Logo from "@/components/Layout/Header/BrandLogo/Logo";
 import { useContext, useState } from "react";
 import AuthDialogContext from "@/app/context/AuthDialogContext";
-const SignUp = ({ signUpOpen }: { signUpOpen?: any }) => {
+const SignUp = ({ onClose }: { onClose?: () => void }) => {
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
   const authDialog = useContext(AuthDialogContext);
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    setLoading(true);
     const data = new FormData(e.currentTarget);
     const value = Object.fromEntries(data.entries());
     const finalData = { ...value };
@@ -27,23 +25,22 @@ const SignUp = ({ signUpOpen }: { signUpOpen?: any }) => {
       body: JSON.stringify(finalData),
     })
       .then((res) => res.json())
-      .then((data) => {
+      .then(() => {
         toast.success("Successfully registered");
-        setLoading(false);
         router.push("/");
+        if (onClose) {
+          setTimeout(() => {
+            onClose();
+          }, 1200);
+        }
+        authDialog?.setIsUserRegistered(true);
+        setTimeout(() => {
+          authDialog?.setIsUserRegistered(false);
+        }, 1100);
       })
       .catch((err) => {
         toast.error(err.message);
-        setLoading(false);
       });
-    setTimeout(() => {
-      signUpOpen(false);
-    }, 1200);
-    authDialog?.setIsUserRegistered(true);
-
-    setTimeout(() => {
-      authDialog?.setIsUserRegistered(false);
-    }, 1100);
   };
 
   return (

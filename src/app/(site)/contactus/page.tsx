@@ -83,7 +83,7 @@ export default function ContactUs() {
                 Contact Information
               </h5>
               <p className='text-sm xs:text-base mobile:text-xm font-normal text-white/80'>
-                Reach out to us for expert consultancy services. We're here to help!
+                Reach out to us for expert consultancy services. We are here to help!
               </p>
             </div>
             <div className='absolute bottom-6 left-6 lg:bottom-12 lg:left-12 flex flex-col gap-4 text-white'>

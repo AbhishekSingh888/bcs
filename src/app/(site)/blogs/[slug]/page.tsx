@@ -6,9 +6,9 @@ import Link from "next/link";
 import { Icon } from '@iconify/react'
 
 
-export async function generateMetadata({ params }: any) {
+export async function generateMetadata({ params }: { params: { slug: string } }) {
     const data = await params;
-    const posts = getAllPosts(["title", "date", "excerpt", "coverImage", "slug"]);
+
     const post = getPostBySlug(data.slug, [
         "title",
         "author",
@@ -59,9 +59,8 @@ export async function generateMetadata({ params }: any) {
     }
 }
 
-export default async function Post({ params }: any) {
+export default async function Post({ params }: { params: { slug: string } }) {
     const data = await params;
-    const posts = getAllPosts(["title", "date", "excerpt", "coverImage", "slug"]);
     const post = getPostBySlug(data.slug, [
         "title",
         "author",

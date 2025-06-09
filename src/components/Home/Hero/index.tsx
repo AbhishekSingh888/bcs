@@ -5,7 +5,6 @@ import { gsap } from 'gsap'
 import { SplitText } from 'gsap/dist/SplitText'
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger'
 import { Urbanist } from 'next/font/google';
-import Button from '@/components/shared/Button'
 import ScrollSection from '@/components/shared/ScrollSection'
 
 const urbanist = Urbanist({
@@ -26,9 +25,6 @@ const Hero: React.FC = () => {
   const videoContainerRef = useRef<HTMLDivElement>(null)
   const circleDecorRef = useRef<HTMLDivElement>(null)
 
-  // Asymmetrical layout elements
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
-  const [isHoveringHeading, setIsHoveringHeading] = useState(false)
 
   useEffect(() => {
     // Parallax mouse movement for decorative elements
@@ -41,7 +37,6 @@ const Hero: React.FC = () => {
       const normalizedX = (clientX / windowWidth) * 2 - 1
       const normalizedY = (clientY / windowHeight) * 2 - 1
 
-      setMousePosition({ x: normalizedX, y: normalizedY })
 
       // Apply subtle movement to decorative elements
       if (circleDecorRef.current) {
@@ -58,7 +53,7 @@ const Hero: React.FC = () => {
 
     window.addEventListener('mousemove', handleMouseMove)
     return () => window.removeEventListener('mousemove', handleMouseMove)
-  }, [isHoveringHeading])
+  }, [circleDecorRef])
 
 
 

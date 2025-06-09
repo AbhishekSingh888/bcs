@@ -1,5 +1,4 @@
 import FAQModern from '@/components/Home/FAQs'
-import FeaturedProperty from '@/components/Home/FeaturedProperty'
 import Hero from '@/components/Home/Hero'
 import Services from '@/components/Home/Services'
 import TestimonialModern from '@/components/Home/Testimonial'

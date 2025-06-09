@@ -6,16 +6,16 @@ import { ThemeProvider } from 'next-themes'
 import Header from '@/components/Layout/Header'
 import Footer from '@/components/Layout/Footer'
 import SmoothScrollProvider from '@/components/shared/SmoothScrollProvider'
-import PageReveal from '@/components/shared/PageReveal'
 import Loader from '@/components/shared/Loader'
 import InitAnimations from '@/components/utils/InitAnimations'
+import { Session } from 'next-auth';
 
 export default function RootLayoutClient({
     children,
     session,
 }: {
     children: React.ReactNode
-    session: any
+    session: Session
 }) {
     const [loading, setLoading] = useState(true); return (
         <>
