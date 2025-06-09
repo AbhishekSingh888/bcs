@@ -56,10 +56,21 @@
   }
 }
 
-
 html {
   scroll-behavior: smooth;
 }
+
+
+/* Optimize for better performance with hardware acceleration */
+.custom-cursor {
+  will-change: transform;
+  pointer-events: none;
+  position: fixed;
+  z-index: 9999;
+}
+
+
+
 
 /* Hide scrollbar for Chrome, Safari and Opera */
 .no-scrollbar::-webkit-scrollbar {
@@ -98,4 +109,3 @@ section {
 .animate-scroll {
   animation: scroll 1.5s infinite ease-in-out;
 }
-

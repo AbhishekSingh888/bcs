@@ -1,248 +1,276 @@
-"use client";
-import * as React from "react";
-import Image from "next/image";
-import { Icon } from "@iconify/react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import {
-    Carousel,
-    CarouselContent,
-    CarouselItem,
-    type CarouselApi,
-} from "@/components/ui/carousel";
+'use client';
+import * as React from 'react';
+import Image from 'next/image';
+import { Icon } from '@iconify/react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import ScrollSection from '@/components/shared/ScrollSection';
+import { Urbanist } from 'next/font/google';
+
+const urbanist = Urbanist({
+    subsets: ['latin'],
+    variable: '--font-urbanist',
+    display: 'swap',
+});
+
+gsap.registerPlugin(ScrollTrigger);
 
 const consultancyTestimonials = [
     {
         review: "Their strategic insights transformed our business operations completely. The ROI was exceptional.",
         name: "Sarah Johnson",
         position: "CEO, TechVenture Inc",
-        image: "/images/users/alkesh.jpg"
+        image: "/images/users/alkesh.jpg",
+        rating: 5,
+        bgColor: "bg-blue-50 dark:bg-blue-900/20"
     },
     {
         review: "Outstanding consulting services that delivered results beyond our expectations. Highly recommended.",
         name: "Michael Chen",
         position: "Operations Director, Global Solutions",
-        image: "/images/users/dwayn.jpg"
+        image: "/images/users/dwayn.jpg",
+        rating: 5,
+        bgColor: "bg-orange-50 dark:bg-orange-900/20"
     },
     {
         review: "Professional, insightful, and results-driven. They helped us scale our business efficiently.",
         name: "Emily Rodriguez",
         position: "Founder, StartupHub",
-        image: "/images/users/jack.jpg"
+        image: "/images/users/jack.jpg",
+        rating: 5,
+        bgColor: "bg-green-50 dark:bg-green-900/20"
+    },
+    {
+        review: "The team's expertise in our industry was impressive. They provided solutions that were both innovative and practical.",
+        name: "David Wilson",
+        position: "CTO, InnoTech Solutions",
+        image: "/images/users/george.jpg",
+        rating: 5,
+        bgColor: "bg-purple-50 dark:bg-purple-900/20"
     }
 ];
 
-const Testimonial = () => {
-    const [api, setApi] = React.useState<CarouselApi | undefined>(undefined);
-    const [current, setCurrent] = React.useState(0);
-    const [count, setCount] = React.useState(0);
-    const sectionRef = React.useRef<HTMLElement>(null);
+const TestimonialModern = () => {
+    const [activeIndex, setActiveIndex] = React.useState(0);
+    const sectionRef = React.useRef<HTMLDivElement>(null);
     const headerRef = React.useRef<HTMLDivElement>(null);
-    const carouselRef = React.useRef<HTMLDivElement>(null);
-    const dotsRef = React.useRef<HTMLDivElement>(null);
+    const cardsRef = React.useRef<HTMLDivElement>(null);
+    const backgroundRef = React.useRef<HTMLDivElement>(null);
+    const quoteRef = React.useRef<HTMLDivElement>(null);
+    const containerRefs = React.useRef<(HTMLDivElement | null)[]>([]);
 
     React.useEffect(() => {
-        if (!api) return;
+        const sections = containerRefs.current.filter(Boolean);
 
-        setCount(api.scrollSnapList().length);
-        setCurrent(api.selectedScrollSnap() + 1);
+        if (!sections.length) return;
 
-        api.on("select", () => {
-            setCurrent(api.selectedScrollSnap() + 1);
+        // Create scroll-jacked sections
+        let scrollTriggers: ScrollTrigger[] = [];
+
+        sections.forEach((section, index) => {
+            if (!section) return;
+
+            const trigger = ScrollTrigger.create({
+                trigger: section,
+                start: 'top 20%',
+                end: 'bottom 20%',
+                onEnter: () => setActiveIndex(index),
+                onEnterBack: () => setActiveIndex(index)
+            });
+
+            scrollTriggers.push(trigger);
         });
-    }, [api]);
 
-    React.useEffect(() => {
-        gsap.registerPlugin(ScrollTrigger);
-
-        const ctx = gsap.context(() => {
-            // Header animation
-            gsap.fromTo(headerRef.current,
-                {
-                    opacity: 0,
-                    y: 50
-                },
-                {
-                    opacity: 1,
-                    y: 0,
-                    duration: 1,
-                    ease: "power2.out",
-                    scrollTrigger: {
-                        trigger: headerRef.current,
-                        start: "top 80%",
-                        toggleActions: "play none none reverse"
-                    }
-                }
-            );
-
-            // Carousel animation
-            gsap.fromTo(carouselRef.current,
-                {
-                    opacity: 0,
-                    scale: 0.9
-                },
-                {
-                    opacity: 1,
-                    scale: 1,
-                    duration: 1.2,
-                    ease: "power2.out",
-                    scrollTrigger: {
-                        trigger: carouselRef.current,
-                        start: "top 85%",
-                        toggleActions: "play none none reverse"
-                    }
-                }
-            );
-
-            // Dots animation
-            gsap.fromTo(dotsRef.current,
-                {
-                    opacity: 0,
-                    y: 30
-                },
-                {
-                    opacity: 1,
-                    y: 0,
-                    duration: 0.8,
-                    delay: 0.5,
-                    ease: "power2.out",
-                    scrollTrigger: {
-                        trigger: dotsRef.current,
-                        start: "top 90%",
-                        toggleActions: "play none none reverse"
-                    }
-                }
-            );
-
-            // Background image parallax
-            gsap.to(".bg-vector", {
-                yPercent: -20,
-                ease: "none",
+        // Parallax effect for background elements
+        if (backgroundRef.current) {
+            gsap.to(backgroundRef.current, {
+                y: '30%',
+                ease: 'none',
                 scrollTrigger: {
                     trigger: sectionRef.current,
-                    start: "top bottom",
-                    end: "bottom top",
+                    start: 'top bottom',
+                    end: 'bottom top',
                     scrub: true
                 }
             });
+        }
 
-        }, sectionRef);
+        // Animate header elements
+        if (headerRef.current) {
+            const elements = headerRef.current.querySelectorAll('.animate-in');
 
-        return () => ctx.revert();
+            gsap.fromTo(
+                elements,
+                { opacity: 0, y: 50 },
+                {
+                    opacity: 1,
+                    y: 0,
+                    stagger: 0.2,
+                    duration: 1,
+                    ease: 'power3.out',
+                    scrollTrigger: {
+                        trigger: headerRef.current,
+                        start: 'top 80%',
+                    }
+                }
+            );
+        }
+
+        // Animate the quote icon
+        if (quoteRef.current) {
+            gsap.fromTo(
+                quoteRef.current,
+                { opacity: 0, scale: 0.5, rotation: -30 },
+                {
+                    opacity: 0.2,
+                    scale: 1,
+                    rotation: 0,
+                    duration: 1.5,
+                    ease: 'elastic.out(1, 0.3)',
+                    scrollTrigger: {
+                        trigger: quoteRef.current,
+                        start: 'top 80%',
+                    }
+                }
+            );
+        }
+
+        return () => {
+            scrollTriggers.forEach(trigger => trigger.kill());
+        };
     }, []);
 
-    const handleDotClick = (index: number) => {
-        if (api) {
-            api.scrollTo(index);
-
-            // Add click animation
-            gsap.to(`.dot-${index}`, {
-                scale: 1.3,
-                duration: 0.2,
-                yoyo: true,
-                repeat: 1,
-                ease: "power2.inOut"
-            });
-        }
-    };
+    // Auto-advance carousel every 6 seconds
+    React.useEffect(() => {
+        const timer = setTimeout(() => {
+            setActiveIndex((prev) => (prev + 1) % consultancyTestimonials.length);
+        }, 6000);
+        return () => clearTimeout(timer);
+    }, [activeIndex]);
 
     return (
-        <section ref={sectionRef} className="bg-dark relative overflow-hidden py-12" id="testimonial">
-            <div className="absolute right-0 bg-vector">
-                <Image
-                    src="/images/testimonial/Vector.png"
-                    alt="background vector"
-                    width={500}
-                    height={739}
-                    unoptimized={true}
-                />
-            </div>
-            <div className="container max-w-6xl mx-auto px-5 2xl:px-0">
-                <div ref={headerRef}>
-                    <p className="text-white text-sm font-semibold flex gap-2 items-center">
-                        <Icon icon="mdi:briefcase-outline" className="text-lg text-primary" />
-                        Client Success Stories
-                    </p>
-                    <h2 className="lg:text-3xl text-2xl font-medium text-white mt-3">
-                        Transforming businesses <br />
-                        <span className="text-primary">through expert guidance</span>
-                    </h2>
-                    <p className="text-white/70 mt-4 max-w-xl text-sm">
-                        Discover how our strategic consulting has helped businesses achieve their goals and drive sustainable growth.
-                    </p>
+        <ScrollSection id="testimonials" parallaxStrength={0.2} parallaxDirection="up">
+            <div ref={sectionRef} className="relative overflow-hidden bg-white dark:bg-gray-900">
+                {/* Background elements */}
+                <div ref={backgroundRef} className="absolute inset-0 pointer-events-none overflow-hidden">
+                    <div className="absolute top-0 left-0 w-[800px] h-[800px] rounded-full bg-gradient-to-br from-blue-100/30 to-blue-200/30 -translate-x-1/2 -translate-y-1/2 dark:from-blue-900/10 dark:to-blue-800/10"></div>
+
                 </div>
-                <div ref={carouselRef}>
-                    <Carousel
-                        setApi={setApi}
-                        opts={{
-                            loop: true,
-                        }}
-                    >
-                        <CarouselContent>
-                            {consultancyTestimonials.map((item, index) => (
-                                <CarouselItem key={index} className="mt-8">
-                                    <div className="lg:flex items-center gap-8">
-                                        <div className="flex items-start gap-6 lg:pr-12">
-                                            <div className="bg-primary/10 p-3 rounded-lg">
-                                                <Icon icon="mdi:quote-right" width={24} height={24} className="text-primary" />
+
+                {/* Large quote icon */}
+                <div ref={quoteRef} className="absolute right-10 top-20 opacity-20 pointer-events-none">
+                    <Icon icon="ph:quotes" className="text-9xl text-primary" />
+                </div>
+
+                <div className="container max-w-7xl mx-auto px-5 2xl:px-0 relative z-10">
+                    {/* Header */}
+                    <div ref={headerRef} className="text-center mb-20">
+                        <p className={`animate-in text-dark/75 dark:text-white/75 text-base font-semibold flex gap-2.5 justify-center items-center ${urbanist.className}`}>
+                            <Icon icon="ph:star-fill" className="text-2xl text-primary" />
+                            <span className="uppercase tracking-[0.3em] text-xs">Client Stories</span>
+                        </p>
+                        <h2 className={`animate-in text-4xl sm:text-5xl lg:text-7xl mt-4 mb-6 font-black tracking-tight text-dark dark:text-white ${urbanist.className}`}>
+                            What Our <span className="text-primary">Clients Say</span>
+                        </h2>
+                        <p className={`animate-in text-dark/50 dark:text-white/50 text-lg md:text-xl leading-relaxed max-w-3xl mx-auto ${urbanist.className} font-light`}>
+                            Discover how our consulting services have helped businesses transform, grow, and succeed in today's competitive landscape
+                        </p>
+                    </div>
+
+                    {/* Testimonial Indicators */}
+                    <div className="flex justify-center gap-3 mb-12">
+                        {consultancyTestimonials.map((_, index) => (
+                            <button
+                                key={index}
+                                className={`w-3 h-3 rounded-full transition-all duration-300 ${index === activeIndex ? 'bg-primary w-10' : 'bg-gray-300 dark:bg-gray-700'}`}
+                                onClick={() => {
+                                    setActiveIndex(index);
+                                    if (containerRefs.current[index]) {
+                                        containerRefs.current[index]?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                    }
+                                }}
+                                aria-label={`View testimonial ${index + 1}`}
+                            />
+                        ))}
+                    </div>
+
+                    {/* Testimonial Cards */}
+                    <div ref={cardsRef} className="space-y-24 relative">
+                        {consultancyTestimonials.map((testimonial, index) => (
+                            <div
+                                key={index}
+                                ref={el => { containerRefs.current[index] = el; }}
+                                className={`transform transition-all duration-700 ${index === activeIndex
+                                    ? 'opacity-100 scale-100 pointer-events-auto'
+                                    : 'opacity-0 scale-95 pointer-events-none absolute top-0 left-0 w-full'
+                                    }`}
+                            >
+                                <div className={`${testimonial.bgColor} rounded-3xl p-8 md:p-12 relative overflow-hidden`}>
+                                    <div className="absolute right-0 top-0 w-32 h-32 bg-gradient-to-bl from-primary/10 to-transparent rounded-bl-full"></div>
+                                    <div className="absolute left-0 bottom-0 w-32 h-32 bg-gradient-to-tr from-primary/10 to-transparent rounded-tr-full"></div>
+
+                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+                                        <div className="md:col-span-2">
+                                            <div className="relative mb-6">
+                                                <Icon icon="ph:quotes" className="absolute -left-3 -top-3 text-5xl text-primary/20" />
+                                                <p className={`text-xl md:text-2xl font-medium leading-relaxed text-gray-800 dark:text-white relative z-10 ${urbanist.className}`}>
+                                                    "{testimonial.review}"
+                                                </p>
                                             </div>
-                                            <div>
-                                                <h4 className="text-white lg:text-xl text-lg leading-relaxed mb-4">
-                                                    "{item.review}"
-                                                </h4>
-                                                <div className="flex items-center mt-4 gap-4">
+
+                                            <div className="flex items-center gap-1 mb-4">
+                                                {[...Array(testimonial.rating)].map((_, i) => (
+                                                    <Icon key={i} icon="ph:star-fill" className="text-amber-400 text-xl" />
+                                                ))}
+                                            </div>
+
+                                            <div className="flex items-center gap-4">
+                                                <div className="relative w-16 h-16 rounded-full overflow-hidden border-2 border-white shadow-lg">
                                                     <Image
-                                                        src={item.image}
-                                                        alt={item.name}
-                                                        width={50}
-                                                        height={50}
-                                                        className="rounded-full lg:hidden block object-cover"
-                                                        unoptimized={true}
+                                                        src={testimonial.image}
+                                                        alt={testimonial.name}
+                                                        fill
+                                                        className="object-cover"
                                                     />
-                                                    <div>
-                                                        <h6 className="text-white text-base font-medium">{item.name}</h6>
-                                                        <p className="text-primary/80 font-medium text-sm">{item.position}</p>
-                                                        <div className="flex gap-1 mt-1">
-                                                            {[...Array(5)].map((_, i) => (
-                                                                <Icon key={i} icon="mdi:star" className="text-yellow-400 text-xs" />
-                                                            ))}
+                                                </div>
+                                                <div>
+                                                    <h4 className={`text-xl font-bold text-gray-900 dark:text-white ${urbanist.className}`}>{testimonial.name}</h4>
+                                                    <p className="text-gray-600 dark:text-gray-300">{testimonial.position}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="hidden md:block relative h-72">
+                                            <div className="absolute inset-0 flex items-center justify-center">
+                                                <div className="relative w-full h-full max-w-xs mx-auto">
+                                                    <div className="absolute w-full h-full bg-gradient-to-tr from-primary/20 to-blue-500/20 rounded-3xl transform rotate-3 scale-95"></div>
+                                                    <div className="absolute w-full h-full bg-white dark:bg-gray-800 rounded-3xl transform -rotate-3 overflow-hidden">
+                                                        <Image
+                                                            src={testimonial.image}
+                                                            alt={testimonial.name}
+                                                            fill
+                                                            className="object-cover opacity-50 mix-blend-overlay"
+                                                        />
+                                                        <div className="absolute inset-0 flex items-center justify-center p-8">
+                                                            <div className="text-center">
+                                                                <Icon icon="ph:thumbs-up-fill" className="text-5xl text-primary mx-auto mb-4" />
+                                                                <p className={`font-bold text-xl ${urbanist.className}`}>Success Story</p>
+                                                                <p className="text-sm opacity-70">Transformed operations, increased productivity, and boosted revenue growth.</p>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="w-full h-60 rounded-xl overflow-hidden mt-6 lg:mt-0">
-                                            <Image
-                                                src={item.image}
-                                                alt={item.name}
-                                                width={300}
-                                                height={300}
-                                                className="lg:block hidden object-cover w-full h-full"
-                                                unoptimized={true}
-                                            />
-                                        </div>
                                     </div>
-                                </CarouselItem>
-                            ))}
-                        </CarouselContent>
-                    </Carousel>
-                </div>
-                <div ref={dotsRef} className="absolute bottom-12 left-1/2 transform -translate-x-1/2 flex gap-2 p-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/20">
-                    {Array.from({ length: count }).map((_, index) => (
-                        <button
-                            key={index}
-                            onClick={() => handleDotClick(index)}
-                            className={`dot-${index} w-2.5 h-2.5 rounded-full transition-all duration-300 ${current === index + 1
-                                ? "bg-primary scale-110"
-                                : "bg-white/50 hover:bg-white/70"
-                                }`}
-                            aria-label={`Go to testimonial ${index + 1}`}
-                        />
-                    ))}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </div>
-        </section>
+        </ScrollSection>
     );
 };
 
-export default Testimonial;
+export default TestimonialModern;

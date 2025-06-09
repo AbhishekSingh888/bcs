@@ -89,7 +89,7 @@ const Header: React.FC = () => {
 
   return (
     <header
-      className={`fixed h-24 ${sticky ? 'py-1' : 'py-5'} z-50 w-full bg-transparent transition-all duration-300 lg:px-0 px-4 ${sticky ? 'top-3' : 'top-0'
+      className={`fixed h-24 py-5 z-50 w-full bg-transparent transition-all duration-300 lg:px-0 px-4 ${sticky ? 'top-3' : 'top-0'
         }`}
     >
       <nav
@@ -143,8 +143,8 @@ const Header: React.FC = () => {
                 href="#"
                 className={`text-base text-inherit flex items-center gap-2 border-r pr-6 ${isHomepage
                   ? sticky
-                    ? 'text-dark dark:text-white hover:text-primary border-dark dark:border-white'
-                    : 'text-white hover:text-primary'
+                    ? 'text-dark dark:text-dark hover:text-primary border-dark dark:border-dark'
+                    : 'text-dark hover:text-primary'
                   : 'text-dark hover:text-primary'
                   }`}
               >
@@ -155,12 +155,7 @@ const Header: React.FC = () => {
             <div>
               <button
                 onClick={openMenu}
-                className={`flex items-center gap-3 p-2 sm:px-5 sm:py-3 rounded-full font-semibold hover:cursor-pointer border group transition-transform hover:scale-105 ${isHomepage
-                  ? sticky
-                    ? 'text-white bg-dark dark:bg-white dark:text-dark dark:hover:text-white dark:hover:bg-dark hover:text-dark hover:bg-white border-dark dark:border-white'
-                    : 'text-dark bg-white dark:text-dark hover:bg-transparent hover:text-white border-white'
-                  : 'bg-dark text-white hover:bg-transparent hover:text-dark dark:bg-white dark:text-dark dark:hover:bg-transparent dark:hover:text-white duration-300'
-                  }`}
+                className={`flex items-center gap-2 text-dark dark:text-white hover:text-primary transition-colors `}
                 aria-label="Toggle mobile menu"
               >
                 <span>
