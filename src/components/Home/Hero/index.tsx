@@ -7,6 +7,7 @@ import { ScrollTrigger } from 'gsap/dist/ScrollTrigger'
 import { Urbanist } from 'next/font/google';
 import ScrollSection from '@/components/shared/ScrollSection'
 import AnimatedButton from '@/components/shared/Button'
+import { heroContent } from '@/app/api/hero'
 
 const urbanist = Urbanist({
   subsets: ['latin'],
@@ -17,6 +18,7 @@ const urbanist = Urbanist({
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(SplitText, ScrollTrigger)
 }
+
 
 const Hero: React.FC = () => {
   const titleRef = useRef<HTMLHeadingElement>(null)
@@ -139,7 +141,14 @@ const Hero: React.FC = () => {
     if (typeof window !== 'undefined') {
       const nextSection = document.querySelector('.hero-section-next')
       if (nextSection) {
-        nextSection.scrollIntoView({ behavior: 'smooth' })
+        nextSection.scrollIntoView(
+          {
+            behavior: 'smooth',
+            block: 'start',
+            inline: 'nearest'
+          },
+
+        )
       }
     }
   }
@@ -185,18 +194,18 @@ const Hero: React.FC = () => {
             className={`${urbanist.className} text-white text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tight leading-[1.1] mb-6 cursor-pointer`}
           >
             <span className="text-orange-600 bg-clip-text">
-              Empowering Growth,
+              {heroContent.title1}
             </span>
             <br />
             <span className="inline-block transition-transform duration-300 hover:translate-x-1">
-              Enabling Success
+              {heroContent.title2}
             </span>
           </h1>
           <p
             ref={subtitleRef}
             className={`${urbanist.className} text-gray-100 text-lg sm:text-xl md:text-2xl mt-6 max-w-3xl leading-relaxed font-light opacity-90`}
           >
-            Welcome to BCS Consulting Pvt. Ltd., where we believe that the right people, the right skills, and the right strategies can change the game.
+            {heroContent.subtitle}
           </p>
         </div>
 
@@ -238,7 +247,7 @@ const Hero: React.FC = () => {
           </div>
 
           <span className="mt-2 text-white/70 text-xs font-medium tracking-wider group-hover:text-orange-400 transition-colors duration-300 uppercase">
-            Explore
+            {heroContent.exploreLabel}
           </span>
         </div>
       </div>
