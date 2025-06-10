@@ -63,9 +63,10 @@ const Hero: React.FC = () => {
       gsap.set(videoContainerRef.current, {
         scale: 0.95,
         borderRadius: '2rem',
-
       })
     }
+
+   
 
     const tl = gsap.timeline({
       defaults: {
@@ -93,9 +94,9 @@ const Hero: React.FC = () => {
             stagger: 0.08,
             ease: 'power2.out',
           }, "-=0.3")
-
       }
     }
+
 
     // Optimized scroll effects
     if (textContainerRef.current && videoContainerRef.current) {
@@ -118,7 +119,6 @@ const Hero: React.FC = () => {
           borderRadius: '0rem',
           ease: 'none',
         }, 0)
-
     }
 
     if (scrollIndicatorRef.current) {
@@ -156,6 +156,9 @@ const Hero: React.FC = () => {
           ref={videoContainerRef}
           className="absolute inset-3 z-0 overflow-hidden rounded-3xl">
           <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/40 to-black/40 z-10"></div>
+          
+          
+
           <video
             autoPlay
             muted
@@ -178,6 +181,7 @@ const Hero: React.FC = () => {
             />
           </div>
         </div>
+        
         <div
           ref={textContainerRef}
           className="relative z-20 flex flex-col items-center justify-center text-center w-full h-full px-6 md:px-12"

@@ -6,10 +6,10 @@ export const TypographyConfiguration = () => {
                 <p className="text-base font-medium text-midnight_text dark:text-white dark:text-opacity-50" >1. Change Font family over here : <span className="font-semibold text-base">src/app/layout.tsx</span>  </p>
                 <div className="py-4 px-3 rounded-md bg-black mt-8">
                     <p className="text-sm text-gray-400 flex flex-col gap-2 mb-3">
-                        {`import { Montserrat } from 'next/font/google'`}
+                        {`import { Urbanist } from 'next/font/google'`}
                     </p>
                     <p className="text-sm text-gray-400 flex flex-col gap-2">
-                        {`const font = Montserrat({ subsets: ["latin"] });`}
+                        {`const font = Urbanist({ subsets: ["latin"] });`}
                     </p>
                 </div>
             </div>

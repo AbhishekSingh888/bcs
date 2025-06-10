@@ -1,12 +1,16 @@
 import type { Metadata } from 'next'
-import { Montserrat, Urbanist } from 'next/font/google'
+import { Urbanist } from 'next/font/google'
 import './globals.css'
 import RootLayoutClient from './RootLayoutClient';
 import { Session } from 'next-auth';
 
-const font = Montserrat({
+const font = Urbanist({
   subsets: ['latin'],
-  variable: '--font-montserrat',
+  adjustFontFallback: true,
+  variable: '--font-urbanist',
+  preload: true,
+  style: ['normal', 'italic'],
+  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
 })
 
 
