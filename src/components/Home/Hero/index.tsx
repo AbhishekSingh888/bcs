@@ -6,6 +6,7 @@ import { SplitText } from 'gsap/dist/SplitText'
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger'
 import { Urbanist } from 'next/font/google';
 import ScrollSection from '@/components/shared/ScrollSection'
+import AnimatedButton from '@/components/shared/Button'
 
 const urbanist = Urbanist({
   subsets: ['latin'],
@@ -27,18 +28,15 @@ const Hero: React.FC = () => {
 
 
   useEffect(() => {
-    // Parallax mouse movement for decorative elements
     const handleMouseMove = (e: MouseEvent) => {
       const { clientX, clientY } = e
       const windowWidth = window.innerWidth
       const windowHeight = window.innerHeight
 
-      // Calculate normalized position (-1 to 1)
       const normalizedX = (clientX / windowWidth) * 2 - 1
       const normalizedY = (clientY / windowHeight) * 2 - 1
 
 
-      // Apply subtle movement to decorative elements
       if (circleDecorRef.current) {
         gsap.to(circleDecorRef.current, {
           x: normalizedX * 20,
@@ -151,14 +149,6 @@ const Hero: React.FC = () => {
   return (
     <ScrollSection id="hero" snapToSection={true} parallaxStrength={0.2} parallaxDirection="up">
       <div className='hero-section relative h-screen w-full overflow-hidden flex items-center justify-center bg-white'>
-        {/* Decorative circle element - asymmetrical element */}
-        <div
-          ref={circleDecorRef}
-          className="absolute rounded-full bg-gradient-to-tr from-orange-100 to-orange-300/30 w-[400px] h-[400px] -top-[150px] -right-[150px] blur-2xl opacity-50 z-0"
-        />
-
-
-
 
         {/* Background video container */}
         <div
@@ -188,7 +178,6 @@ const Hero: React.FC = () => {
             />
           </div>
         </div>
-
         <div
           ref={textContainerRef}
           className="relative z-20 flex flex-col items-center justify-center text-center w-full h-full px-6 md:px-12"

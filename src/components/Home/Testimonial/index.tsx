@@ -55,7 +55,6 @@ const TestimonialModern = () => {
     const sectionRef = React.useRef<HTMLDivElement>(null);
     const headerRef = React.useRef<HTMLDivElement>(null);
     const cardsRef = React.useRef<HTMLDivElement>(null);
-    const backgroundRef = React.useRef<HTMLDivElement>(null);
     const quoteRef = React.useRef<HTMLDivElement>(null);
     const containerRefs = React.useRef<(HTMLDivElement | null)[]>([]);
 
@@ -80,20 +79,6 @@ const TestimonialModern = () => {
 
             scrollTriggers.push(trigger);
         });
-
-        // Parallax effect for background elements
-        if (backgroundRef.current) {
-            gsap.to(backgroundRef.current, {
-                y: '30%',
-                ease: 'none',
-                scrollTrigger: {
-                    trigger: sectionRef.current,
-                    start: 'top bottom',
-                    end: 'bottom top',
-                    scrub: true
-                }
-            });
-        }
 
         // Animate header elements
         if (headerRef.current) {
@@ -151,11 +136,7 @@ const TestimonialModern = () => {
     return (
         <ScrollSection id="testimonials" parallaxStrength={0.2} parallaxDirection="up">
             <div ref={sectionRef} className="relative overflow-hidden bg-white dark:bg-gray-900">
-                {/* Background elements */}
-                <div ref={backgroundRef} className="absolute inset-0 pointer-events-none overflow-hidden">
-                    <div className="absolute top-0 left-0 w-[800px] h-[800px] rounded-full bg-gradient-to-br from-blue-100/30 to-blue-200/30 -translate-x-1/2 -translate-y-1/2 dark:from-blue-900/10 dark:to-blue-800/10"></div>
-
-                </div>
+               
 
                 {/* Large quote icon */}
                 <div ref={quoteRef} className="absolute right-10 top-20 opacity-20 pointer-events-none">

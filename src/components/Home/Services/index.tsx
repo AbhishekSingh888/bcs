@@ -224,9 +224,7 @@ const ServicesModern = () => {
 
   return (
     <ScrollSection id="services" className="hero-section-next">
-      {/* Magazine style layout for Services */}
       <div className="relative  bg-white dark:bg-gray-900 overflow-hidden">
-        {/* Background elements */}
         <div className="absolute left-0 top-0 opacity-20">
           <Image
             src="/images/categories/Vector.svg"
