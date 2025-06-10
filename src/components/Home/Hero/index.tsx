@@ -1,12 +1,11 @@
 'use client'
 import Image from 'next/image'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import { SplitText } from 'gsap/dist/SplitText'
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger'
 import { Urbanist } from 'next/font/google';
 import ScrollSection from '@/components/shared/ScrollSection'
-import AnimatedButton from '@/components/shared/Button'
 import { heroContent } from '@/app/api/hero'
 
 const urbanist = Urbanist({
@@ -63,13 +62,10 @@ const Hero: React.FC = () => {
     if (videoContainerRef.current) {
       gsap.set(videoContainerRef.current, {
         scale: 0.95,
-        borderRadius: '2rem'
+        borderRadius: '2rem',
+
       })
     }
-
-
-
-
 
     const tl = gsap.timeline({
       defaults: {
@@ -125,7 +121,6 @@ const Hero: React.FC = () => {
 
     }
 
-    // Fade in scroll indicator
     if (scrollIndicatorRef.current) {
       gsap.from(scrollIndicatorRef.current, {
         opacity: 0,
@@ -157,11 +152,9 @@ const Hero: React.FC = () => {
     <ScrollSection id="hero" snapToSection={true} parallaxStrength={0.2} parallaxDirection="up">
       <div className='hero-section relative h-screen w-full overflow-hidden flex items-center justify-center bg-white'>
 
-        {/* Background video container */}
         <div
           ref={videoContainerRef}
-          className="absolute inset-1 z-0 overflow-hidden will-change-transform rounded-3xl"
-        >
+          className="absolute inset-3 z-0 overflow-hidden rounded-3xl">
           <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/40 to-black/40 z-10"></div>
           <video
             autoPlay
@@ -213,7 +206,7 @@ const Hero: React.FC = () => {
         <div
           ref={scrollIndicatorRef}
           onClick={handleScrollClick}
-          className="absolute left-1/2 bottom-10 z-30 -translate-x-1/2 cursor-pointer flex flex-col items-center group transition-transform duration-300 hover:translate-y-1"
+          className="absolute left-1/2 bottom-10 z-50 -translate-x-1/2 cursor-pointer flex flex-col items-center group transition-transform duration-300 hover:translate-y-1"
           aria-label="Scroll down"
         >
           <div className="relative">
@@ -227,8 +220,8 @@ const Hero: React.FC = () => {
                 cx="20"
                 cy="20"
                 r="18"
-                stroke="rgba(255,255,255,0.4)"
-                strokeWidth="1"
+                stroke="rgba(255,255,255,0.85)"
+                strokeWidth="2"
                 fill="none"
                 className="group-hover:stroke-orange-400 transition-colors duration-300"
               />
@@ -236,8 +229,8 @@ const Hero: React.FC = () => {
               {/* Arrow down - simplified */}
               <path
                 d="M13 18 L20 25 L27 18"
-                stroke="rgba(255,255,255,0.8)"
-                strokeWidth="2"
+                stroke="rgba(255,255,255,1)"
+                strokeWidth="2.5"
                 fill="none"
                 strokeLinecap="round"
                 strokeLinejoin="round"

@@ -220,11 +220,50 @@ const ServicesModern = () => {
         }
       );
     }
+
+    // Call to Action button animation
+    const ctaButton = document.querySelector('.cta-button');
+    if (ctaButton) {
+      gsap.fromTo(
+        ctaButton,
+        { opacity: 0, scale: 0.8 },
+        {
+          opacity: 1,
+          scale: 1,
+          duration: 1,
+          ease: 'back.out(1.7)',
+          scrollTrigger: {
+            trigger: ctaButton,
+            start: 'top 90%',
+          },
+        }
+      );
+    }
+
+    // Magazine Grid Layout cards animation
+    if (magazineLayoutRef.current) {
+      const cards = magazineLayoutRef.current.querySelectorAll('.magazine-column');
+      gsap.fromTo(
+        cards,
+        { opacity: 0, y: 50 },
+        {
+          opacity: 1,
+          y: 0,
+          stagger: 0.2,
+          duration: 1,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: magazineLayoutRef.current,
+            start: 'top 85%',
+          },
+        }
+      );
+    }
   }, []);
 
   return (
     <ScrollSection id="services" className="hero-section-next">
-      <div className="relative  bg-white dark:bg-gray-900 overflow-hidden">
+      <div className="relative bg-white dark:bg-gray-900 overflow-hidden">
         <div className="absolute left-0 top-0 opacity-20">
           <Image
             src="/images/categories/Vector.svg"
@@ -434,7 +473,7 @@ const ServicesModern = () => {
           <div className="text-center mt-16">
             <Link
               href="/services"
-              className="inline-flex items-center gap-2 py-4 px-8 bg-primary text-base leading-4 text-white rounded-full font-semibold hover:bg-dark duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl transition-all"
+              className="cta-button inline-flex items-center gap-2 py-4 px-8 bg-primary text-base leading-4 text-white rounded-full font-semibold hover:bg-dark duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl transition-all"
             >
               View All Services
               <Icon icon="ph:arrow-right" className="text-sm" />

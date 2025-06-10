@@ -11,7 +11,7 @@ interface ScrollSectionProps {
   id: string;
   className?: string;
   snapToSection?: boolean;
-  parallaxStrength?: number; // 0-1 value for parallax effect strength
+  parallaxStrength?: number;
   parallaxDirection?: 'up' | 'down' | 'left' | 'right';
   darkMode?: boolean;
   onEnter?: () => void;
@@ -36,10 +36,9 @@ const ScrollSection = ({
   useEffect(() => {
     if (!sectionRef.current || !contentRef.current) return;
 
-    // Calculate parallax values
     let xTo = 0;
     let yTo = 0;
-    const parallaxValue = parallaxStrength * 100; // Convert to percentage
+    const parallaxValue = parallaxStrength * 100;
 
     switch (parallaxDirection) {
       case 'up':
@@ -56,9 +55,8 @@ const ScrollSection = ({
         break;
     }
 
-    // Create parallax effect if strength > 0
     let parallaxTl: gsap.core.Timeline | null = null;
-    
+
     if (parallaxStrength > 0) {
       parallaxTl = gsap.timeline({
         scrollTrigger: {
@@ -68,17 +66,17 @@ const ScrollSection = ({
           scrub: true,
         }
       });
-      
+
       parallaxTl.fromTo(
         contentRef.current,
         { x: 0, y: 0 },
         { x: xTo, y: yTo, ease: 'none' }
       );
     }
-    
+
     // Create snap scroll if enabled
     let snapScrollTrigger: ScrollTrigger | null = null;
-    
+
     if (snapToSection) {
       snapScrollTrigger = ScrollTrigger.create({
         trigger: sectionRef.current,
@@ -111,9 +109,8 @@ const ScrollSection = ({
     <section
       ref={sectionRef}
       id={id}
-      className={`relative overflow-hidden ${
-        snapToSection ? 'min-h-screen' : ''
-      } ${darkMode ? 'bg-gray-900 text-white' : ''} ${className}`}
+      className={`relative overflow-hidden ${snapToSection ? 'min-h-screen' : ''
+        } ${darkMode ? 'bg-gray-900 text-white' : ''} ${className}`}
     >
       <div ref={contentRef} className="relative w-full h-full">
         {children}

@@ -1,11 +1,10 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 
 export default function Loader({ onFinish }: { onFinish: () => void }) {
     const loaderRef = useRef<HTMLDivElement>(null);
-    const textRef = useRef<HTMLDivElement>(null);
-    const progressBarRef = useRef<HTMLDivElement>(null);
-    const progressFillRef = useRef<HTMLDivElement>(null);
+    const textRef1 = useRef<HTMLDivElement>(null);
+    const textRef2 = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         document.body.style.overflow = "hidden";
@@ -18,93 +17,128 @@ export default function Loader({ onFinish }: { onFinish: () => void }) {
             { opacity: 1, scale: 1, duration: 0.8, ease: "back.out(1.7)" }
         );
 
-        if (textRef.current) {
-            const letters = textRef.current.children;
+        // Animate first word
+        if (textRef1.current) {
+            const letters1 = textRef1.current.children;
             tl.fromTo(
-                letters,
+                letters1,
                 { y: 100, opacity: 0, rotation: 45 },
                 {
                     y: 0,
                     opacity: 1,
                     rotation: 0,
                     duration: 0.8,
-                    stagger: 0.1,
+                    stagger: 0.08,
                     ease: "back.out(1.7)",
                 },
                 "-=0.4"
             );
         }
 
-        // Animate progress bar entrance
-        tl.fromTo(
-            progressBarRef.current,
-            { scaleX: 0, opacity: 0 },
-            { scaleX: 1, opacity: 1, duration: 0.6, ease: "power2.out" },
-            "-=0.2"
-        );
+        // Animate second word after first
+        if (textRef2.current) {
+            const letters2 = textRef2.current.children;
+            tl.fromTo(
+                letters2,
+                { y: 100, opacity: 0, rotation: 45 },
+                {
+                    y: 0,
+                    opacity: 1,
+                    rotation: 0,
+                    duration: 0.8,
+                    stagger: 0.08,
+                    ease: "back.out(1.7)",
+                },
+                "-=0.5"
+            );
+        }
 
-        // Animate progress fill
-        tl.to(
-            progressFillRef.current,
-            {
-                width: "100%",
-                duration: 1.5,
+        // Auto-finish after 2.2s (or customize as needed)
+        const finishTimeout = setTimeout(() => {
+            gsap.to(loaderRef.current, {
+                opacity: 0,
+                scale: 0.92,
+                duration: 0.7,
                 ease: "power2.inOut",
                 onComplete: () => {
-                    // Fade out loader and call onFinish
-                    gsap.to(loaderRef.current, {
-                        opacity: 0,
-                        duration: 0.5,
-                        onComplete: onFinish,
-                    });
+                    onFinish();
                 },
-            },
-            "-=0.2"
-        );
+            });
+        }, 2200);
 
         return () => {
             document.body.style.overflow = "";
+            clearTimeout(finishTimeout);
         };
     }, [onFinish]);
 
     return (
         <div
             ref={loaderRef}
-            className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-black text-white transition-all will-change-transform will-change-opacity overflow-hidden"
-            style={{ pointerEvents: "all" }}
+            className="fixed inset-0 z-[9999] flex flex-col items-center justify-center text-white transition-all will-change-transform will-change-opacity overflow-hidden"
+            style={{
+                pointerEvents: "all",
+                background: "linear-gradient(120deg, #18181b 0%, #23272f 100%)",
+                // fallback for browsers without gradient support
+                backgroundColor: "#18181b",
+            }}
         >
-            
-
+            {/* Animated background gradient overlay */}
             <div
-                ref={textRef}
-                className="flex text-2xl md:text-4xl lg:text-5xl font-bold mb-8 tracking-wide"
-            >
-                {"BHARTIYA CONSULTANTS".split("").map((letter, index) => (
-                    <span key={index} className="inline-block">
-                        {letter}
-                    </span>
-                ))}
-            </div>
-
-
-            <div
-                ref={progressBarRef}
-                className="w-80 h-1 bg-gray-800 rounded-full overflow-hidden relative"
-            >
+                className="absolute inset-0 -z-10 animate-gradient-move"
+                style={{
+                    background:
+                        "linear-gradient(120deg, #18181b 60%, #23272f 100%)",
+                    opacity: 0.85,
+                }}
+            />
+            <div className="flex flex-col items-center mb-8">
                 <div
-                    ref={progressFillRef}
-                    className="h-full bg-gradient-to-r from-green-400 to-blue-400 rounded-full relative"
-                    style={{ width: "0%" }}
+                    ref={textRef1}
+                    className="flex text-2xl md:text-4xl lg:text-5xl font-bold tracking-wide drop-shadow-lg"
                 >
-                    {/* Animated glow effect */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-30 animate-pulse" />
+                    {"BHARTIYA".split("").map((letter, index) => (
+                        <span key={index} className="inline-block">
+                            {letter}
+                        </span>
+                    ))}
+                </div>
+                <div
+                    ref={textRef2}
+                    className="flex text-2xl md:text-4xl lg:text-5xl font-bold tracking-wide drop-shadow-lg"
+                >
+                    {"CONSULTANTS".split("").map((letter, index) => (
+                        <span key={index} className="inline-block">
+                            {letter}
+                        </span>
+                    ))}
                 </div>
             </div>
-
-            {/* Loading text */}
-            <div className="mt-6 text-sm font-light tracking-widest opacity-60 animate-pulse">
-                LOADING...
+            {/* Modern spinner and loading text */}
+            <div className="mt-6 flex flex-col items-center">
+                <div className="w-8 h-8 mb-2 border-4 border-t-transparent border-white rounded-full animate-spin" />
+                <div className="text-sm font-light tracking-widest opacity-80">
+                    LOADING...
+                </div>
             </div>
+            {/* Gradient animation keyframes */}
+            <style jsx>{`
+                .animate-gradient-move {
+                    background-size: 200% 200%;
+                    animation: gradientMove 3s ease-in-out infinite;
+                }
+                @keyframes gradientMove {
+                    0% {
+                        background-position: 0% 50%;
+                    }
+                    50% {
+                        background-position: 100% 50%;
+                    }
+                    100% {
+                        background-position: 0% 50%;
+                    }
+                }
+            `}</style>
         </div>
     );
 }

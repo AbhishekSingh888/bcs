@@ -20,8 +20,7 @@ export default function RootLayoutClient({
     const [loading, setLoading] = useState(true); return (
         <>
             <NextTopLoader color="#07be8a" />
-            {loading && <Loader onFinish={() => setLoading(false)} />}
-            {!loading && (
+            {loading && <Loader onFinish={() => setLoading(false)} />}            {!loading && (
                 <SessionProviderComp session={session}>
                     <ThemeProvider attribute='class' enableSystem={true} defaultTheme='light'>
                         <Header />
