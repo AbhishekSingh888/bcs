@@ -209,7 +209,7 @@ const Header: React.FC = () => {
                 {navLinks.map((item, index) => (
                   <NavLink key={index} item={item} onClick={closeMenu} />
                 ))}
-                <li className="flex items-center gap-4">
+                {/* <li className="flex items-center gap-4">
                   <Link
                     href="/signin"
                     className="py-4 px-8 bg-primary text-base leading-4 block w-fit text-white rounded-full border border-primary font-semibold mt-3 hover:bg-transparent hover:text-primary duration-300"
@@ -222,7 +222,7 @@ const Header: React.FC = () => {
                   >
                     Sign up
                   </Link>
-                </li>
+                </li> */}
               </ul>
             </nav>
           </div>

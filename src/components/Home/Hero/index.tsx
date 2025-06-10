@@ -45,8 +45,6 @@ const Hero: React.FC = () => {
           ease: 'power2.out'
         })
       }
-
-
     }
 
     window.addEventListener('mousemove', handleMouseMove)
